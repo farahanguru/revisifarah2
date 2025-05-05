@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Universe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #1a202b;
+            overflow-x: hidden;
+        }
+
+        /* LOGIN PAGE STYLES */
+        .login-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            background: linear-gradient(135deg, #1d2832 0%, #0e1a24 50%, #5991c6 100%);
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container:before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(113, 80, 80, 0.1) 0%, rgba(255,255,255,0) 70%);
+            top: -250px;
+            left: -250px;
+            animation: moveGlow 15s infinite alternate;
+        }
+
+        @keyframes moveGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100vw, 100vh); }
+        }
+
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 360px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            transform: translateY(0);
+            animation: floatBox 6s ease-in-out infinite;
+        }
+
+        @keyframes floatBox {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #001f3f;
+            font-size: 28px;
+            margin-bottom: 10px;
+            animation: colorShift 5s infinite alternate;
+        }
+
+        @keyframes colorShift {
+            0% { color: #001f3f; }
+            50% { color: #0a5999; }
+            100% { color: #001f3f; }
+        }
+
+        .login-header p {
+            color: #0a3b66;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #001f3f;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccd0d5;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #001f3f;
+            box-shadow: 0 0 10px rgba(0, 31, 63, 0.3);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #001f3f 0%, #0a3b66 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn:after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.8s;
+            opacity: 0;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #0a3b66 0%, #001f3f 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 31, 63, 0.3);
+        }
+
+        .login-btn:hover:after {
+            opacity: 1;
+            transform: rotate(30deg) translate(50%, -50%);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 8px rgba(0, 31, 63, 0.3);
+        }
+
+        /* DASHBOARD STYLES */
+        .dashboard-container {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e6eef5 0%, #f0f2f5 100%);
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(90deg, #001f3f 0%, #0a3b66 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .brand h2 {
+            font-size: 22px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+            margin: 0 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ffffff;
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .nav-item:hover:before {
+            transform: scaleX(1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item.active:before {
+            transform: scaleX(1);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-section img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid white;
+        }
+
+        .user-section h4 {
+            color: white;
+            font-size: 15px;
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: rgba(225, 76, 60, 0.8);
+            color: white;
+            border: none;
+            padding: 7px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(225, 76, 60, 1);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 100px 20px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: none;
+            animation: fadeInUp 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+        }
+
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #001f3f 0%, #0a3b66 100%);
+            animation: widthGrow 1s ease-out;
+        }
+
+        @keyframes widthGrow {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        .section-header h3 {
+            color: #091a2b;
+            font-size: 22px;
+        }
+
+        /* Gallery grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            position: relative;
+            top: 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                top: 0;
+            }
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .caption {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.833);
+            position: relative;
+        }
+
+        .gallery-item .caption:before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, #001f3f 0%, #0a3b66 100%);
+            top: 0;
+            left: 20px;
+            transform: translateY(-50%);
+        }
+
+        .gallery-item h4 {
+            margin-bottom: 8px;
+            color: #001f3f;
+            transition: color 0.3s;
+        }
+
+        .gallery-item:hover h4 {
+            color: #0a3b66;
+        }
+
+        .gallery-item p {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Icons */
+        .icon {
+            font-style: normal;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page with Navy Theme and Animation -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>My Universe</h2>
+                <p>Masuk untuk menjelajahi duniamu</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Masukkan username Anda">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password Anda">
+                </div>
+                <button type="button" class="login-btn" id="loginBtn">Masuk</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard with Top Navigation -->
+    <div class="dashboard-container" id="dashboardPage">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="nav-container">
+                <div class="brand">
+                    <h2>My Universe</h2>
+                </div>
+                <div class="nav-menu">
+                    <div class="nav-item active" data-section="anime">
+                        <span class="icon">🎬</span> Anime Favorit
+                    </div>
+                    <div class="nav-item" data-section="makeup">
+                        <span class="icon">💄</span> Inspo Make Up
+                    </div>
+                    <div class="nav-item" data-section="music">
+                        <span class="icon">🎵</span> Lagu Favorit
+                    </div>
+                </div>
+                <div class="user-section">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMTAwIiBmaWxsPSIjMDAxZjNmIi8+CiAgICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSI4MCIgcj0iNDAiIGZpbGw9IiNlY2YwZjEiLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjE5MCIgcj0iODAiIGZpbGw9IiNlY2YwZjEiLz4KPC9zdmc+" alt="User">
+                    <h4 id="userDisplayName">Pengunjung</h4>
+                    <button class="logout-btn" id="logoutBtn">Keluar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Anime Section -->
+            <div class="content-section active" id="anime-section">
+                <div class="section-header">
+                    <h3>Anime Favorit</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- Gintama -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="fotogintama.jpg" alt="Gintama">
+                        <div class="caption">
+                            <h4>Gintama</h4>
+                            <p>Anime komedi-aksi dengan setting era Edo futuristik yang menggabungkan humor dan drama.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- One Piece -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="onepiece.jpg" alt="One Piece">
+                        <div class="caption">
+                            <h4>One Piece</h4>
+                            <p>Petualangan Monkey D. Luffy dan kru topi jeraminya mencari harta karun legendaris One Piece.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Hunter x Hunter -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="wp5562443.jpg" alt="Hunter x Hunter">
+                        <div class="caption">
+                            <h4>Hunter x Hunter</h4>
+                            <p>Gon Freecss dan perjalanannya menjadi seorang Hunter sambil mencari ayahnya.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Make Up Section -->
+            <div class="content-section" id="makeup-section">
+                <div class="section-header">
+                    <h3>Inspo Make Up</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- Douyin Make Up -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="douyin-makeup.jpg" alt="Douyin Make Up">
+                        <div class="caption">
+                            <h4>Douyin Make Up</h4>
+                            <p>Gaya make up populer dari China dengan fokus pada kulit glowing dan mata yang menggemaskan.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Arabic Make Up -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="glam.jpg" alt="Glam Make Up">
+                        <div class="caption">
+                            <h4>Glam Make Up</h4>
+                            <p>Make up glamor dengan fokus pada mata yang dramatis dan contouring yang kuat.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Latina Make Up -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="dark.jpg" alt="Dark Feminine Make Up">
+                        <div class="caption">
+                            <h4>Dark Feminine Make Up</h4>
+                            <p>Make up dengan sentuhan Eropa, warna-warna gelap, dan fokus pada mata yang tajam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Music Section -->
+            <div class="content-section" id="music-section">
+                <div class="section-header">
+                    <h3>Lagu Favorit</h3>
+                </div>
+                <div class="gallery-grid">
+                    <!-- Lose -->
+                    <div class="gallery-item" style="--i: 1">
+                        <img src="lose.jpg" alt="Lose - NIKI">
+                        <div class="caption">
+                            <h4>Snooze</h4>
+                            <p>Berceritakan tentang sesorang yang sangat mencintai pasangannya, sehingga rela melakukan apa saja demi pasangan.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- You'll Be in My Heart -->
+                    <div class="gallery-item" style="--i: 2">
+                        <img src="open arms.jpg" alt="Open Arms - SZA">
+                        <div class="caption">
+                            <h4>Open Arms</h4>
+                            <p>menceritakan tentang perasaan yang mendalam tentang cinta, pengorbanan, dan kesetiaan.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Backburner -->
+                    <div class="gallery-item" style="--i: 3">
+                        <img src="backbunner.jpg" alt="Backburner - NIKI">
+                        <div class="caption">
+                            <h4>Backburner</h4>
+                            <p>menceritakan tentang perasaan ambigu seseorang terhadap hubungan yang tidak jelas yang dijalaninya.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (username.trim() !== "" && password.trim() !== "") {
+                // Hide login page
+                document.getElementById('loginPage').style.display = 'none';
+                // Show dashboard
+                document.getElementById('dashboardPage').style.display = 'block';
+                // Update user display name
+                document.getElementById('userDisplayName').textContent = username;
+            } else {
+                alert("Username dan password tidak boleh kosong!");
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Hide dashboard
+            document.getElementById('dashboardPage').style.display = 'none';
+            // Show login page
+            document.getElementById('loginPage').style.display = 'flex';
+            // Clear form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        });
+        
+        // Menu navigation
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all menu items
+                navItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+                
+                // Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show corresponding content section
+                const sectionId = this.getAttribute('data-section') + '-section';
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
